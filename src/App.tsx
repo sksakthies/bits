@@ -5,7 +5,7 @@ import Navbar from './components/Navbar';
 const App = () => {
   return (
     <Router>
-      <div className="relative min-h-screen bg-dark-deeper overflow-hidden">
+      <div className="relative min-h-screen bg-[#0f1428] overflow-hidden">
         <Navbar />
         <main>
           <Routes>
