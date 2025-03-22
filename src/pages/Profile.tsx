@@ -247,7 +247,7 @@ const GitHubStatsBox: React.FC = () => {
   );
 };
 
-const Dashboard: React.FC = () => {
+const Profile: React.FC = () => {
   const profile = profileData as ProfileData;
 
   return (
@@ -379,4 +379,4 @@ const Dashboard: React.FC = () => {
   );
 };
 
-export default Dashboard;
+export default Profile;
