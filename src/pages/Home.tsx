@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import gsap from 'gsap';
+import Navbar from '../components/Navbar';
 
 const Home = () => {
   const containerRef = useRef(null);
@@ -34,8 +35,8 @@ const Home = () => {
         <div className="absolute top-1/2 left-1/2 w-1/2 h-1/2 bg-primary/30 rounded-full filter blur-[150px] transform -translate-x-1/2 -translate-y-1/2" />
       </div>
 
-      {/* Header Navigation */}
-     
+      {/* Import Navbar Component */}
+      {/* <Navbar /> */}
 
       {/* Main Content with Half-Visible Concentric Circles and Content */}
       <div className="relative z-[5] min-h-[90vh] flex items-center mt-30">
@@ -104,7 +105,7 @@ const Home = () => {
               className="mb-3"
             >
               <span className="bg-gradient-to-r from-primary to-secondary px-4 py-1 rounded-full text-white text-sm font-bold uppercase tracking-wide">
-                Revolutionary Design
+                Redefining Learning Path !
               </span>
             </motion.div>
             
@@ -114,9 +115,9 @@ const Home = () => {
               transition={{ duration: 1, delay: 0.2 }}
               className="text-5xl md:text-6xl lg:text-7xl font-extrabold leading-tight mb-6"
             >
-              <span className="text-white block mb-2">Transform</span>
-              <span className="bg-gradient-to-r from-primary via-primary-light to-secondary text-transparent bg-clip-text">
-                Your Experience
+              <span className="text-white block mb-2">Building</span>
+              <span className="bg-gradient-to-r from-primary via-primary-light to-secondary  bg-clip-text">
+                Digital Presence
               </span>
             </motion.h1>
             
@@ -126,7 +127,7 @@ const Home = () => {
               transition={{ duration: 1, delay: 0.4 }}
               className="text-white/80 text-lg md:text-xl mb-8 max-w-lg"
             >
-              Break boundaries and explore beyond the ordinary with our cutting-edge platform engineered for visionaries.
+              Create a powerful online identity and reimagine educational experiences with our innovative platform designed for modern learners and educators.
             </motion.p>
             
             <motion.div 
@@ -139,46 +140,49 @@ const Home = () => {
                 whileHover={{ scale: 1.05, boxShadow: '0 10px 25px -5px rgba(138, 43, 226, 0.4)' }}
                 whileTap={{ scale: 0.98 }}
                 className="px-8 py-4 bg-gradient-to-r from-primary to-secondary rounded-lg font-bold text-white 
-                         shadow-lg shadow-primary/30 transition-all duration-300 relative overflow-hidden group"
+                         shadow-lg shadow-primary/30 transition-all duration-300 relative overflow-hidden group
+                         border-2 border-white/20 hover:border-white/40"
               >
                 <span className="relative z-10">Get Started Now</span>
                 <div className="absolute inset-0 bg-gradient-to-r from-secondary to-primary opacity-0 
                              group-hover:opacity-100 transition-opacity duration-500"></div>
               </motion.button>
-              
-              <motion.button
-                whileHover={{ scale: 1.05, borderColor: 'rgba(138, 43, 226, 0.5)' }}
-                whileTap={{ scale: 0.98 }}
-                className="px-8 py-4 bg-white/10 backdrop-blur-md border-2 border-white/20 rounded-lg font-bold 
-                         text-white hover:text-primary-light transition-all duration-300 flex items-center justify-center gap-2"
-              >
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd"></path>
-                </svg>
-                Watch Demo
-              </motion.button>
             </motion.div>
             
-            {/* Floating stats */}
-            <div className="mt-16 grid grid-cols-3 gap-4">
-              {[
-                { number: '95%', label: 'Satisfaction' },
-                { number: '24/7', label: 'Support' },
-                { number: '100+', label: 'Features' }
-              ].map((stat, index) => (
-                <motion.div 
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.8 + (index * 0.1) }}
-                  className="p-3 bg-white/5 border border-white/10 rounded-lg backdrop-blur-sm"
-                >
-                  <p className="text-2xl font-bold bg-gradient-to-r from-primary to-secondary text-transparent bg-clip-text">
-                    {stat.number}
-                  </p>
-                  <p className="text-white/70 text-sm">{stat.label}</p>
-                </motion.div>
-              ))}
+            {/* Dynamic Feature Highlights */}
+            <div className="mt-16">
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.8 }}
+                className="relative overflow-hidden rounded-xl border border-white/10 bg-white/5 backdrop-blur-md p-6"
+              >
+                <div className="absolute -right-20 -top-20 h-40 w-40 rounded-full bg-primary/20 blur-2xl"></div>
+                <div className="absolute -left-20 -bottom-20 h-40 w-40 rounded-full bg-secondary/20 blur-2xl"></div>
+                
+                <h3 className="text-xl font-bold text-white mb-4">What Makes Us Different</h3>
+                
+                <div className="space-y-3">
+                  {[
+                    { icon: "✨", text: "Intuitive interface designed for creative minds" },
+                    { icon: "🚀", text: "Blazing-fast performance with optimized architecture" },
+                    { icon: "🔒", text: "Enterprise-grade security without compromises" }
+                  ].map((item, index) => (
+                    <motion.div 
+                      key={index}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.5, delay: 1 + (index * 0.1) }}
+                      className="flex items-center gap-3"
+                    >
+                      <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-primary/30 to-secondary/30 text-white">
+                        {item.icon}
+                      </div>
+                      <p className="text-white/80">{item.text}</p>
+                    </motion.div>
+                  ))}
+                </div>
+              </motion.div>
             </div>
           </div>
         </div>
@@ -260,7 +264,7 @@ const Home = () => {
           <div>
             <h3 className="text-white font-bold text-xl mb-4">EduVision</h3>
             <p className="text-white/60 mb-6">Transforming the way you experience digital learning.</p>
-            <div className="flex space-x-4">
+            {/* <div className="flex space-x-4">
               {['facebook', 'twitter', 'instagram', 'linkedin'].map((social, index) => (
                 <a key={index} href="#" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white/70 
                                 hover:bg-primary/70 hover:text-white transition-colors duration-300">
@@ -270,10 +274,10 @@ const Home = () => {
                   </svg>
                 </a>
               ))}
-            </div>
+            </div> */}
           </div>
           
-          {['Products', 'Company', 'Support'].map((column, colIndex) => (
+          {/* {['Products', 'Company', 'Support'].map((column, colIndex) => (
             <div key={colIndex}>
               <h4 className="text-white font-semibold mb-4">{column}</h4>
               <ul className="space-y-2">
@@ -286,12 +290,12 @@ const Home = () => {
                 ))}
               </ul>
             </div>
-          ))}
+          ))} */}
         </div>
         
         <div className="max-w-7xl mx-auto mt-12 pt-6 border-t border-white/10 text-center">
           <p className="text-white/40 text-sm">
-            © 2023 EduVision. All rights reserved.
+            © 2025 EduVision. All rights reserved.
           </p>
         </div>
       </footer>
