@@ -1,0 +1,55 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --primary: 138, 43, 226;    /* #8a2be2 - Purple */
+    --secondary: 0, 204, 255;   /* #00ccff - Cyan */
+    --background: 10, 10, 26;   /* #0a0a1a - Dark blue-black */
+    --text: 255, 255, 255;      /* #ffffff - White */
+    --accent: 25, 25, 50;       /* #191932 - Dark purple-blue */
+  }
+  
+  body {
+    @apply bg-[#0a0a1a] text-white font-['Inter',_sans-serif] antialiased;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-['Montserrat',_sans-serif] font-semibold;
+  }
+  
+  button {
+    @apply transition-all duration-300;
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    @apply bg-gradient-to-r from-[#8a2be2] to-[#00ccff] text-transparent bg-clip-text;
+  }
+  
+  .bg-glass {
+    @apply bg-white/10 backdrop-blur-md border border-white/20;
+  }
+  
+  .hover-glow {
+    @apply hover:shadow-lg hover:shadow-[#8a2be2]/20 transition-all duration-300;
+  }
+}
+
+/* Custom scrollbar for webkit browsers */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(10, 10, 26, 0.8);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, rgba(138, 43, 226, 0.5), rgba(0, 204, 255, 0.5));
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(to bottom, rgba(138, 43, 226, 0.8), rgba(0, 204, 255, 0.8));
+}
