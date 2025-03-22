@@ -1,28 +1,15 @@
 import React, { useEffect, useRef } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion } from 'framer-motion';
 import gsap from 'gsap';
 
 const Home = () => {
-  const heroRef = useRef(null);
-  const featuresRef = useRef(null);
-  const { scrollYProgress } = useScroll();
-  const opacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
-  const scale = useTransform(scrollYProgress, [0, 0.2], [1, 0.95]);
+  const containerRef = useRef(null);
 
   useEffect(() => {
-    gsap.from(heroRef.current, {
-      opacity: 1,
-      y: 50,
+    gsap.from(containerRef.current, {
+      opacity: 0,
       duration: 1,
       ease: "power3.out",
-    });
-
-    gsap.from(featuresRef.current, {
-      opacity: 1,
-      y: 30,
-      duration: 0.8,
-      delay: 0.5,
-      ease: "power2.out",
     });
   }, []);
 
@@ -35,251 +22,279 @@ const Home = () => {
   );
 
   return (
-    <div className="min-h-screen bg-[#0f1428]">
+    <div className="min-h-screen bg-[#0a0d1d] overflow-hidden">
       {/* Background Effects */}
-      <div className="fixed inset-0 bg-[#0f1428] overflow-hidden">
+      <div className="fixed inset-0 bg-[#0a0d1d] overflow-hidden">
         {/* Gradient background */}
-        <div className="absolute inset-0 bg-gradient-radial from-[#0f1428] via-[#1c1f3a]/20 to-[#0f1428]" />
+        <div className="absolute inset-0 bg-gradient-radial from-[#0a0d1d] via-[#1c1f3a]/70 to-[#0a0d1d]" />
         
-        {/* Animated dots pattern with lighter opacity */}
-        <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center opacity-0" />
-        
-        {/* Glow effects - lighter and more visible */}
-        {glowCircle('primary/25', '1/3', 'top-1/4 -left-1/6', '3xl')}
-        {glowCircle('secondary/20', '1/4', 'bottom-10 right-0', '3xl')}
-        <div className="absolute top-1/2 left-1/2 w-1/2 h-1/2 bg-primary/10 rounded-full filter blur-[150px] transform -translate-x-1/2 -translate-y-1/2" />
+        {/* Glow effects */}
+        {glowCircle('primary/60', '1/3', 'top-1/4 -left-1/6', '3xl')}
+        {glowCircle('secondary/50', '1/4', 'bottom-10 right-0', '3xl')}
+        <div className="absolute top-1/2 left-1/2 w-1/2 h-1/2 bg-primary/30 rounded-full filter blur-[150px] transform -translate-x-1/2 -translate-y-1/2" />
       </div>
 
-      {/* Main Content */}
-      <div className="relative">
-        {/* Hero Section */}
-        <section className="relative min-h-screen pt-32 pb-20 px-6 sm:px-8 lg:px-10 flex flex-col justify-center">
-          <div ref={heroRef} className="max-w-7xl mx-auto">
-            <motion.div
-              style={{ opacity, scale }}
-              className="relative z-10"
-            >
-              {/* Decorative elements - more visible */}
-              <motion.div 
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 2 }}
-                className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full border border-primary/20 opacity-100"
-              />
-              <motion.div 
-                initial={{ opacity: 0, rotate: 45 }}
-                animate={{ opacity: 1, rotate: 0 }}
-                transition={{ duration: 2 }}
-                className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] rounded-full border border-secondary/20 opacity-100"
-              />
+      {/* Header Navigation */}
+     
 
-              <div className="flex flex-col items-center text-center">
-                <motion.span 
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6 }}
-                  className="inline-block py-1 px-4 rounded-full bg-primary/20 border border-primary/30 text-sm font-medium text-white mb-8"
+      {/* Main Content with Half-Visible Concentric Circles and Content */}
+      <div className="relative z-[5] min-h-[90vh] flex items-center mt-30">
+        {/* Concentric circles positioned to the right side of the screen */}
+        <div ref={containerRef} className="absolute -right-[300px] top-1/2 -translate-y-1/2">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 2 }}
+            className="relative w-[800px] h-[800px] rounded-full border-4 border-primary/70"
+          />
+          <motion.div 
+            initial={{ opacity: 0, rotate: 45, scale: 0.9 }}
+            animate={{ opacity: 1, rotate: 0, scale: 1 }}
+            transition={{ duration: 2, delay: 0.3 }}
+            className="absolute w-[600px] h-[600px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border-4 border-secondary/70"
+          />
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 2, delay: 0.6 }}
+            className="absolute w-[400px] h-[400px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border-4 border-primary-light/70"
+          />
+          <motion.div 
+            initial={{ opacity: 0, scale: 0 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1, delay: 1.2, type: "spring", stiffness: 200 }}
+            className="absolute w-[200px] h-[200px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full 
+                     bg-gradient-to-br from-primary/20 to-secondary/20 border-2 border-white/20 backdrop-blur-sm"
+          >
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="text-center">
+                <motion.div 
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                  className="w-full h-full absolute inset-0"
                 >
-                  The Future of Learning is Here
-                </motion.span>
-
-                <motion.h1 
-                  className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight leading-tight"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.2, duration: 0.8 }}
+                  <div className="w-3 h-3 absolute top-0 left-1/2 -translate-x-1/2 bg-primary rounded-full"></div>
+                </motion.div>
+                {/* <motion.p 
+                  className="text-white font-bold text-lg pb-1"
+                  animate={{ opacity: [0.7, 1, 0.7] }}
+                  transition={{ duration: 3, repeat: Infinity }}
                 >
-                  <span className="text-white">Master Your</span>
-                  <br />
-                  <span className="bg-gradient-to-r from-primary via-primary-light to-secondary  bg-clip-text inline-block mt-2">
-                    Learning Journey
-                  </span>
-                </motion.h1>
-
-                <motion.p 
-                  className="mt-8 text-lg md:text-xl text-white max-w-3xl mx-auto leading-relaxed"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.4, duration: 0.8 }}
-                >
-                  Personalized AI-powered learning paths that adapt to your goals and style.
-                  Join a global community of learners and accelerate your growth.
+                  ELEVATE
                 </motion.p>
-
-                <motion.div 
-                  className="mt-12 flex flex-col sm:flex-row justify-center gap-5"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.6, duration: 0.8 }}
+                <motion.p 
+                  className="text-primary-light/90 font-bold text-sm"
+                  animate={{ opacity: [0.6, 1, 0.6] }}
+                  transition={{ duration: 3, repeat: Infinity, delay: 0.5 }}
                 >
-                  <motion.button
-                    whileHover={{ 
-                      scale: 1.05,
-                      boxShadow: '0 10px 30px -10px rgba(138, 43, 226, 0.5)'
-                    }}
-                    whileTap={{ scale: 0.95 }}
-                    className="px-8 py-4 bg-gradient-to-r from-primary to-secondary rounded-lg font-medium text-white 
-                             shadow-xl shadow-primary/30 transition-all duration-300 relative overflow-hidden group"
-                  >
-                    <span className="relative z-10">Start Your Journey</span>
-                    <div className="absolute inset-0 bg-gradient-to-r from-secondary to-primary opacity-100 group-hover:opacity-100 transition-opacity duration-500"></div>
-                  </motion.button>
-                  
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="px-8 py-4 bg-white/10 backdrop-blur-md border border-white/20 rounded-lg font-medium 
-                             text-white hover:bg-white/15 transition-all duration-300 flex items-center justify-center gap-2"
-                  >
-                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd"></path>
-                    </svg>
-                    Watch Demo
-                  </motion.button>
-                </motion.div>
-                
-                {/* Stats Section with full opacity text */}
-                <motion.div 
-                  className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-4 max-w-3xl mx-auto w-full"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.8, duration: 0.8 }}
-                >
-                  {[
-                    { number: '10M+', label: 'Active Learners' },
-                    { number: '200+', label: 'Learning Paths' },
-                    { number: '95%', label: 'Success Rate' }
-                  ].map((stat, index) => (
-                    <div key={index} className="p-4 text-center">
-                      <div className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary to-secondary  bg-clip-text">
-                        {stat.number}
-                      </div>
-                      <div className="text-white mt-1 text-sm">
-                        {stat.label}
-                      </div>
-                    </div>
-                  ))}
-                </motion.div>
-
-                {/* Scroll indicator */}
-                <motion.div 
-                  className="absolute bottom-10 left-1/2 transform -translate-x-1/2"
-                  animate={{ 
-                    y: [0, 10, 0],
-                    opacity: [0.2, 1, 0.2]
-                  }}
-                  transition={{ 
-                    repeat: Infinity,
-                    duration: 2
-                  }}
-                >
-                  <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
-                  </svg>
-                </motion.div>
+                  YOUR VISION
+                </motion.p> */}
               </div>
-            </motion.div>
-          </div>
-        </section>
-
-        {/* Features Section with lighter background */}
-        <section ref={featuresRef} className="relative py-24 px-6 sm:px-8 lg:px-10 bg-[#1c1f3a]/60 backdrop-blur-md">
-          <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-20">
-              <motion.h2 
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6 }}
-                className="text-3xl lg:text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text mb-4"
-              >
-                Elevate Your Learning Experience
-              </motion.h2>
-              <motion.p 
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-                className="text-lg text-white max-w-2xl mx-auto"
-              >
-                Discover innovative features designed to transform how you learn and grow
-              </motion.p>
             </div>
+          </motion.div>
+        </div>
+
+        {/* Left content with catchy phrase */}
+        <div className="container mx-auto px-8 md:px-16 z-10">
+          <div className="max-w-xl">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1 }}
+              className="mb-3"
+            >
+              <span className="bg-gradient-to-r from-primary to-secondary px-4 py-1 rounded-full text-white text-sm font-bold uppercase tracking-wide">
+                Revolutionary Design
+              </span>
+            </motion.div>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10">
+            <motion.h1 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, delay: 0.2 }}
+              className="text-5xl md:text-6xl lg:text-7xl font-extrabold leading-tight mb-6"
+            >
+              <span className="text-white block mb-2">Transform</span>
+              <span className="bg-gradient-to-r from-primary via-primary-light to-secondary text-transparent bg-clip-text">
+                Your Experience
+              </span>
+            </motion.h1>
+            
+            <motion.p 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, delay: 0.4 }}
+              className="text-white/80 text-lg md:text-xl mb-8 max-w-lg"
+            >
+              Break boundaries and explore beyond the ordinary with our cutting-edge platform engineered for visionaries.
+            </motion.p>
+            
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, delay: 0.6 }}
+              className="flex flex-col sm:flex-row gap-4"
+            >
+              <motion.button
+                whileHover={{ scale: 1.05, boxShadow: '0 10px 25px -5px rgba(138, 43, 226, 0.4)' }}
+                whileTap={{ scale: 0.98 }}
+                className="px-8 py-4 bg-gradient-to-r from-primary to-secondary rounded-lg font-bold text-white 
+                         shadow-lg shadow-primary/30 transition-all duration-300 relative overflow-hidden group"
+              >
+                <span className="relative z-10">Get Started Now</span>
+                <div className="absolute inset-0 bg-gradient-to-r from-secondary to-primary opacity-0 
+                             group-hover:opacity-100 transition-opacity duration-500"></div>
+              </motion.button>
+              
+              <motion.button
+                whileHover={{ scale: 1.05, borderColor: 'rgba(138, 43, 226, 0.5)' }}
+                whileTap={{ scale: 0.98 }}
+                className="px-8 py-4 bg-white/10 backdrop-blur-md border-2 border-white/20 rounded-lg font-bold 
+                         text-white hover:text-primary-light transition-all duration-300 flex items-center justify-center gap-2"
+              >
+                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd"></path>
+                </svg>
+                Watch Demo
+              </motion.button>
+            </motion.div>
+            
+            {/* Floating stats */}
+            <div className="mt-16 grid grid-cols-3 gap-4">
               {[
-                {
-                  icon: (
-                    <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"></path>
-                    </svg>
-                  ),
-                  title: 'AI-Powered Learning',
-                  description: 'Personalized paths that adapt to your learning style and pace, ensuring optimal knowledge retention with advanced AI algorithms.'
-                },
-                {
-                  icon: (
-                    <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z"></path>
-                      <path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path>
-                    </svg>
-                  ),
-                  title: 'Interactive Roadmaps',
-                  description: 'Visual progress tracking with milestone achievements and customizable learning journeys based on your career goals.'
-                },
-                {
-                  icon: (
-                    <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd"></path>
-                    </svg>
-                  ),
-                  title: 'Global Community',
-                  description: 'Connect with learners and mentors worldwide to share insights, collaborate on projects, and accelerate your growth.'
-                }
-              ].map((feature, index) => (
-                <motion.div
+                { number: '95%', label: 'Satisfaction' },
+                { number: '24/7', label: 'Support' },
+                { number: '100+', label: 'Features' }
+              ].map((stat, index) => (
+                <motion.div 
                   key={index}
                   initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1, duration: 0.5 }}
-                  className="relative p-8 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 
-                           hover:border-primary/30 transition-all duration-500 group hover:shadow-lg hover:shadow-primary/10"
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.8 + (index * 0.1) }}
+                  className="p-3 bg-white/5 border border-white/10 rounded-lg backdrop-blur-sm"
                 >
-                  {/* Glow effect on hover */}
-                  <div className="absolute -inset-0.5 bg-gradient-to-r from-primary to-secondary rounded-xl 
-                                group-hover:opacity-30 blur-sm transition-opacity duration-500" />
-                  
-                  {/* Content */}
-                  <div className="relative">
-                    <div className="w-14 h-14 flex items-center justify-center rounded-lg bg-primary/20 
-                                 text-primary-light mb-6 group-hover:bg-primary/30 transition-colors duration-300">
-                      {feature.icon}
-                    </div>
-                    
-                    <h3 className="text-xl font-semibold mb-4 text-white group-hover:text-gradient transition-all duration-500">
-                      {feature.title}
-                    </h3>
-                    
-                    <p className="text-white group-hover:text-white transition-colors duration-300">
-                      {feature.description}
-                    </p>
-                    
-                    <div className="mt-6 flex items-center text-primary-light font-medium  
-                                 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 
-                                 group-hover:translate-y-0">
-                      <span>Learn more</span>
-                      <svg className="w-4 h-4 ml-1.5 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path>
-                      </svg>
-                    </div>
-                  </div>
+                  <p className="text-2xl font-bold bg-gradient-to-r from-primary to-secondary text-transparent bg-clip-text">
+                    {stat.number}
+                  </p>
+                  <p className="text-white/70 text-sm">{stat.label}</p>
                 </motion.div>
               ))}
             </div>
           </div>
-        </section>
+        </div>
       </div>
+
+      {/* Feature Section with Cool UI Elements */}
+      <div className="relative z-10 py-24 px-8 bg-gradient-to-b from-[#0a0d1d] to-[#121530]">
+        <div className="max-w-6xl mx-auto">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="text-center mb-20"
+          >
+            <span className="inline-block px-4 py-1 bg-white/10 backdrop-blur-sm rounded-full text-primary-light text-sm font-medium mb-4">
+              Why Choose Us
+            </span>
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-2">
+              Features That <span className="text-primary-light">Set Us Apart</span>
+            </h2>
+            <div className="w-24 h-1 bg-gradient-to-r from-primary to-secondary mx-auto mb-4 rounded-full"></div>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              {
+                title: 'Intuitive Design',
+                description: 'Effortlessly navigate through our platform with an interface designed for optimal user experience.',
+                icon: (
+                  <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M10 3.5a1.5 1.5 0 013 0V4a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-.5a1.5 1.5 0 000 3h.5a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-.5a1.5 1.5 0 00-3 0v.5a1 1 0 01-1 1H6a1 1 0 01-1-1v-3a1 1 0 00-1-1h-.5a1.5 1.5 0 010-3H4a1 1 0 001-1V6a1 1 0 011-1h3a1 1 0 001-1v-.5z" />
+                  </svg>
+                )
+              },
+              {
+                title: 'Lightning Performance',
+                description: 'Experience unmatched speed and efficiency with our optimized backend technology.',
+                icon: (
+                  <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd"></path>
+                  </svg>
+                )
+              },
+              {
+                title: 'Smart Integration',
+                description: 'Seamlessly connect with your favorite tools and platforms for a unified workflow.',
+                icon: (
+                  <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM14 11a1 1 0 011 1v1h1a1 1 0 110 2h-1v1a1 1 0 11-2 0v-1h-1a1 1 0 110-2h1v-1a1 1 0 011-1z" />
+                  </svg>
+                )
+              }
+            ].map((feature, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.2 * index }}
+                whileHover={{ y: -5, boxShadow: '0 10px 30px -5px rgba(138, 43, 226, 0.2)' }}
+                className="p-8 bg-gradient-to-br from-white/5 to-white/10 backdrop-blur-md rounded-2xl border border-white/10 
+                         group transition-all duration-300"
+              >
+                <div className="w-16 h-16 flex items-center justify-center rounded-xl bg-gradient-to-br from-primary/20 to-secondary/20 
+                           text-primary-light mb-6 group-hover:bg-gradient-to-br group-hover:from-primary/30 group-hover:to-secondary/30 
+                           transition-all duration-300 border border-white/5">
+                  {feature.icon}
+                </div>
+                <h3 className="text-xl font-bold text-white mb-3 group-hover:text-primary-light transition-colors duration-300">{feature.title}</h3>
+                <p className="text-white/70 group-hover:text-white/90 transition-colors duration-300">{feature.description}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Modern Footer */}
+      <footer className="relative z-10 py-12 px-8 bg-[#0d0f1a] border-t border-white/5">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-10">
+          <div>
+            <h3 className="text-white font-bold text-xl mb-4">EduVision</h3>
+            <p className="text-white/60 mb-6">Transforming the way you experience digital learning.</p>
+            <div className="flex space-x-4">
+              {['facebook', 'twitter', 'instagram', 'linkedin'].map((social, index) => (
+                <a key={index} href="#" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white/70 
+                                hover:bg-primary/70 hover:text-white transition-colors duration-300">
+                  <span className="sr-only">{social}</span>
+                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 0C4.477 0 0 4.477 0 10c0 4.237 2.636 7.855 6.356 9.312-.088-.791-.167-2.005.035-2.868.182-.78 1.172-4.97 1.172-4.97s-.299-.6-.299-1.486c0-1.39.806-2.428 1.81-2.428.852 0 1.264.64 1.264 1.408 0 .858-.546 2.14-.828 3.33-.236.995.5 1.807 1.48 1.807 1.778 0 3.144-1.874 3.144-4.58 0-2.393-1.72-4.068-4.177-4.068-2.845 0-4.515 2.135-4.515 4.34 0 .859.331 1.781.745 2.281a.3.3 0 01.069.288l-.278 1.133c-.044.183-.145.223-.335.134-1.249-.581-2.03-2.407-2.03-3.874 0-3.154 2.292-6.052 6.608-6.052 3.469 0 6.165 2.473 6.165 5.776 0 3.447-2.173 6.22-5.19 6.22-1.013 0-1.965-.525-2.291-1.148l-.623 2.378c-.226.869-.835 1.958-1.244 2.621.937.29 1.931.446 2.962.446 5.522 0 10-4.477 10-10S15.522 0 10 0z" clipRule="evenodd"></path>
+                  </svg>
+                </a>
+              ))}
+            </div>
+          </div>
+          
+          {['Products', 'Company', 'Support'].map((column, colIndex) => (
+            <div key={colIndex}>
+              <h4 className="text-white font-semibold mb-4">{column}</h4>
+              <ul className="space-y-2">
+                {[1, 2, 3, 4].map((item, itemIndex) => (
+                  <li key={itemIndex}>
+                    <a href="#" className="text-white/60 hover:text-primary-light transition-colors duration-200">
+                      {column} Link {item}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+        
+        <div className="max-w-7xl mx-auto mt-12 pt-6 border-t border-white/10 text-center">
+          <p className="text-white/40 text-sm">
+            © 2023 EduVision. All rights reserved.
+          </p>
+        </div>
+      </footer>
     </div>
   );
 };
