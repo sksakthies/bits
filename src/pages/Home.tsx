@@ -262,7 +262,7 @@ const Home = () => {
       <footer className="relative z-10 py-12 px-8 bg-[#0d0f1a] border-t border-white/5">
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-10">
           <div>
-            <h3 className="text-white font-bold text-xl mb-4">EduVision</h3>
+            <h3 className="text-white font-bold text-xl mb-4">EduVision's Vision</h3>
             <p className="text-white/60 mb-6">Transforming the way you experience digital learning.</p>
             {/* <div className="flex space-x-4">
               {['facebook', 'twitter', 'instagram', 'linkedin'].map((social, index) => (

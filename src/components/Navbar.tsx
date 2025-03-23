@@ -35,12 +35,33 @@ const Navbar = () => {
 
           {/* Desktop Navigation Items */}
           <div className="hidden md:flex items-center justify-center flex-1 space-x-10">
-            {navItems.map((item, i) => (
+            {/* Home link explicitly pointing to / to load Homepage.tsx */}
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0, duration: 0.5 }}
+            >
+              <Link
+                to="/"
+                className="text-white text-sm font-medium relative group py-2"
+                onClick={() => setActiveItem('Home')}
+              >
+                <span className={`${activeItem === 'Home' ? 'text-white' : 'hover:text-white'} transition-colors duration-300`}>
+                  Home
+                </span>
+                <span className={`absolute -bottom-1 left-0 h-[2px] bg-gradient-to-r from-primary to-secondary 
+                               transition-all duration-300 rounded-full
+                               ${activeItem === 'Home' ? 'w-full' : 'w-0 group-hover:w-full'}`}/>
+              </Link>
+            </motion.div>
+            
+            {/* Other navigation items */}
+            {navItems.slice(1).map((item, i) => (
               <motion.div
                 key={item}
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.1, duration: 0.5 }}
+                transition={{ delay: (i + 1) * 0.1, duration: 0.5 }}
               >
                 <Link
                   to={item.toLowerCase()}
@@ -136,7 +157,24 @@ const Navbar = () => {
             transition={{ duration: 0.3 }}
           >
             <div className="px-6 py-5 space-y-3">
-              {navItems.map((item) => (
+              {/* Home link explicitly pointing to / in mobile menu */}
+              <Link
+                to="/"
+                className={`block py-2 px-3 text-base font-medium rounded-md ${
+                  activeItem === 'Home'
+                  ? 'bg-primary/10 text-white'
+                  : 'text-white hover:bg-primary/5 hover:text-white'
+                }`}
+                onClick={() => {
+                  setActiveItem('Home');
+                  setIsMobileMenuOpen(false);
+                }}
+              >
+                Home
+              </Link>
+              
+              {/* Other mobile menu items */}
+              {navItems.slice(1).map((item) => (
                 <Link
                   key={item}
                   to={item.toLowerCase()}
@@ -154,7 +192,7 @@ const Navbar = () => {
                 </Link>
               ))}
               
-              <div className="pt-3 flex flex-col space-y-3 border-t border-white/10">
+              <div className="pt-4 space-y-2">
                 <Link to="/profile" className="w-full py-2.5 px-4 bg-gradient-to-r from-primary to-secondary rounded-md text-sm font-medium text-white shadow-lg flex items-center justify-center gap-2">
                   <span>Profile</span>
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">

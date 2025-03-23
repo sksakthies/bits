@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import profileData from "./prog.json";
+import Navbar from '../components/Navbar';
 
 interface ProfileData {
   name: string;
@@ -56,84 +57,87 @@ const LeetCodeStatsBox: React.FC = () => {
 
   if (loading)
     return (
-      <div className="animate-pulse bg-gradient-to-br from-white to-gray-50 p-6 rounded-xl shadow-lg border border-gray-100">
-        <div className="h-8 bg-gray-200 rounded w-1/3 mb-4"></div>
+      <div className="w-full bg-[#161830] rounded-lg p-6 border border-primary/50">
+        <div className="h-8 bg-primary/40 rounded w-1/3 mb-4"></div>
         <div className="grid grid-cols-2 gap-4">
           {[1, 2, 3, 4].map((i) => (
-            <div key={i} className="h-6 bg-gray-200 rounded"></div>
+            <div key={i} className="h-8 bg-primary/30 rounded"></div>
           ))}
         </div>
       </div>
     );
+    
   if (!stats)
     return (
-      <div className="bg-red-50 text-red-600 p-4 rounded-xl shadow-lg border border-red-100">
-        Failed to load LeetCode stats
+      <div className="w-full bg-[#161830] rounded-lg p-6 border border-red-500/60">
+        <p className="text-red-400 font-medium text-center">
+          Failed to load LeetCode stats. Please try again later.
+        </p>
       </div>
     );
 
   return (
-    <div className="bg-gradient-to-br from-white to-gray-50 p-6 rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+    <div className="w-full bg-[#161830] rounded-lg p-6 border border-primary/50">
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold bg-gradient-to-r from-orange-500 to-orange-600 bg-clip-text text-transparent">
+        <h2 className="text-2xl font-bold text-white">
           LeetCode Statistics
         </h2>
-        <div className="px-3 py-1 bg-orange-100 text-orange-600 rounded-full text-sm font-medium">
-          #{stats.ranking}
+        <div className="px-4 py-1.5 bg-primary text-white rounded-md text-sm font-bold">
+          Rank #{stats.ranking}
         </div>
       </div>
-
+      
       <div className="grid grid-cols-2 gap-6">
         <div className="space-y-4">
-          <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
-            <div className="text-sm text-gray-500 mb-1">Total Solved</div>
-            <div className="text-2xl font-bold text-gray-900">
+          <div className="bg-[#0F0F1F] p-4 rounded-lg border border-primary/30">
+            <div className="text-sm text-primary-light font-medium mb-1">Total Solved</div>
+            <div className="text-2xl font-bold text-white">
               {stats.totalSolved}
-              <span className="text-sm text-gray-500 ml-1">
+              <span className="text-sm text-white ml-1">
                 / {stats.totalQuestions}
               </span>
             </div>
           </div>
 
           <div className="grid grid-cols-3 gap-3">
-            <div className="bg-green-50 p-3 rounded-xl shadow-sm border border-green-100">
-              <div className="text-sm text-green-600 mb-1">Easy</div>
-              <div className="text-lg font-semibold text-green-700">
+            <div className="bg-[#0F0F1F] p-3 rounded-lg border border-green-500/50">
+              <div className="text-sm text-green-400 mb-1 font-semibold">Easy</div>
+              <div className="text-lg font-bold text-white">
                 {stats.easySolved}
               </div>
-              <div className="text-xs text-green-500">/ {stats.totalEasy}</div>
+              <div className="text-xs text-green-400">/ {stats.totalEasy}</div>
             </div>
-            <div className="bg-yellow-50 p-3 rounded-xl shadow-sm border border-yellow-100">
-              <div className="text-sm text-yellow-600 mb-1">Medium</div>
-              <div className="text-lg font-semibold text-yellow-700">
+            <div className="bg-[#0F0F1F] p-3 rounded-lg border border-yellow-500/50">
+              <div className="text-sm text-yellow-400 mb-1 font-semibold">Medium</div>
+              <div className="text-lg font-bold text-white">
                 {stats.mediumSolved}
               </div>
-              <div className="text-xs text-yellow-500">
+              <div className="text-xs text-yellow-400">
                 / {stats.totalMedium}
               </div>
             </div>
-            <div className="bg-red-50 p-3 rounded-xl shadow-sm border border-red-100">
-              <div className="text-sm text-red-600 mb-1">Hard</div>
-              <div className="text-lg font-semibold text-red-700">
+            <div className="bg-[#0F0F1F] p-3 rounded-lg border border-red-500/50">
+              <div className="text-sm text-red-400 mb-1 font-semibold">Hard</div>
+              <div className="text-lg font-bold text-white">
                 {stats.hardSolved}
               </div>
-              <div className="text-xs text-red-500">/ {stats.totalHard}</div>
+              <div className="text-xs text-red-400">/ {stats.totalHard}</div>
             </div>
           </div>
         </div>
 
         <div className="space-y-4">
-          <div className="bg-blue-50 p-4 rounded-xl shadow-sm border border-blue-100">
-            <div className="text-sm text-blue-500 mb-1">Acceptance Rate</div>
-            <div className="text-2xl font-bold text-blue-700">
+          <div className="bg-[#0F0F1F] p-4 rounded-lg border border-blue-500/50">
+            <div className="text-sm text-blue-400 mb-1 font-semibold">Acceptance Rate</div>
+            <div className="text-2xl font-bold text-white">
               {stats.acceptanceRate}%
             </div>
           </div>
-          <div className="bg-purple-50 p-4 rounded-xl shadow-sm border border-purple-100">
-            <div className="text-sm text-purple-500 mb-1">
+          <div className="bg-[#0F0F1F] p-4 rounded-lg border border-purple-500/50">
+            <div className="text-sm text-purple-400 mb-1 font-semibold">
               Contribution Points
             </div>
-            <div className="text-2xl font-bold text-purple-700">
+            <div className="text-2xl font-bold text-white">
               {stats.contributionPoints}
             </div>
           </div>
@@ -168,9 +172,9 @@ const GitHubStatsBox: React.FC = () => {
           new Set(
             reposData
               .map((repo: any) => repo.language)
-              .filter((lang: string) => lang !== null)
+              .filter((lang: string | null) => lang !== null)
           )
-        );
+        ) as string[];
 
         setStats({
           public_repos: userData.public_repos,
@@ -189,53 +193,56 @@ const GitHubStatsBox: React.FC = () => {
 
   if (loading)
     return (
-      <div className="animate-pulse bg-gradient-to-br from-white to-gray-50 p-6 rounded-xl shadow-lg border border-gray-100">
-        <div className="h-8 bg-gray-200 rounded w-1/3 mb-4"></div>
+      <div className="w-full bg-[#161830] rounded-lg p-6 border border-secondary/50">
+        <div className="h-8 bg-secondary/40 rounded w-1/3 mb-4"></div>
         <div className="grid grid-cols-2 gap-4">
           {[1, 2, 3, 4].map((i) => (
-            <div key={i} className="h-6 bg-gray-200 rounded"></div>
+            <div key={i} className="h-8 bg-secondary/30 rounded"></div>
           ))}
         </div>
       </div>
     );
+    
   if (!stats)
     return (
-      <div className="bg-red-50 text-red-600 p-4 rounded-xl shadow-lg border border-red-100">
-        Failed to load GitHub stats
+      <div className="w-full bg-[#161830] rounded-lg p-6 border border-red-500/60">
+        <p className="text-red-400 font-medium text-center">
+          Failed to load GitHub stats. Please try again later.
+        </p>
       </div>
     );
 
   return (
-    <div className="bg-gradient-to-br from-white to-gray-50 p-6 rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+    <div className="w-full bg-[#161830] rounded-lg p-6 border border-secondary/50">
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold bg-gradient-to-r from-blue-500 to-blue-600 bg-clip-text text-transparent">
+        <h2 className="text-2xl font-bold text-white">
           GitHub Statistics
         </h2>
         <a
           href={`https://github.com/${stats.username}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="px-3 py-1 bg-blue-100 text-blue-600 rounded-full text-sm font-medium hover:bg-blue-200 transition-colors duration-200"
+          className="px-4 py-1.5 bg-secondary text-white rounded-md text-sm font-bold"
         >
           @{stats.username}
         </a>
       </div>
 
       <div className="grid grid-cols-2 gap-6">
-        <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
-          <div className="text-sm text-gray-500 mb-1">Total Repositories</div>
-          <div className="text-2xl font-bold text-gray-900">
+        <div className="bg-[#0F0F1F] p-4 rounded-lg border border-secondary/30">
+          <div className="text-sm text-secondary-light font-medium mb-1">Total Repositories</div>
+          <div className="text-2xl font-bold text-white">
             {stats.public_repos}
           </div>
         </div>
 
-        <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
-          <div className="text-sm text-gray-500 mb-1">Languages Used</div>
+        <div className="bg-[#0F0F1F] p-4 rounded-lg border border-secondary/30">
+          <div className="text-sm text-secondary-light font-medium mb-1">Languages Used</div>
           <div className="flex flex-wrap gap-2 mt-2">
             {stats.languages.map((lang, index) => (
               <span
                 key={index}
-                className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-medium hover:bg-blue-200 transition-colors duration-200"
+                className="px-3 py-1 bg-secondary/30 text-white rounded-md text-sm font-medium"
               >
                 {lang}
               </span>
@@ -247,132 +254,157 @@ const GitHubStatsBox: React.FC = () => {
   );
 };
 
-const Profile: React.FC = () => {
-  const profile = profileData as ProfileData;
+const ProfileCard: React.FC<{profile: ProfileData}> = ({ profile }) => {
+  return (
+    <div className="w-full bg-[#161830] rounded-lg p-8 mb-8 border border-primary/50 shadow-md">
+      <div className="flex flex-col md:flex-row gap-6 items-start md:items-center justify-between">
+        <div>
+          <h1 className="text-4xl font-bold text-white mb-3">
+            {profile.name}
+          </h1>
+          <p className="text-white text-lg mb-3">{profile.bio}</p>
+          <p className="text-white flex items-center">
+            <span className="mr-2">📍</span> {profile.location}
+          </p>
+        </div>
+        
+        {profile.website && (
+          <a
+            href={profile.website}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-6 py-3 bg-transparent text-white rounded-md text-sm font-bold border border-white/70 hover:border-white shadow-md transition-all duration-300"
+          >
+            Visit Website
+          </a>
+        )}
+      </div>
+    </div>
+  );
+};
+
+const SkillsCard: React.FC<{skills: string[]}> = ({ skills }) => {
+  return (
+    <div className="w-full bg-[#161830] rounded-lg p-6 border border-primary/50 shadow-md">
+      <h2 className="text-2xl font-bold text-white mb-6 pb-2 border-b border-gray-700">
+        Skills
+      </h2>
+      
+      <div className="flex flex-wrap gap-3">
+        {skills.map((skill, index) => (
+          <span
+            key={index}
+            className="px-4 py-2 bg-[#0F0F1F] text-white rounded-md text-sm font-medium border border-primary/40 shadow-sm hover:border-primary/80 hover:bg-[#141428] transition-all duration-300"
+          >
+            {skill}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+const ProjectsCard: React.FC<{projects: {name: string; link: string}[]}> = ({ projects }) => {
+  return (
+    <div className="w-full bg-[#161830] rounded-lg p-6 border border-primary/50 shadow-md">
+      <h2 className="text-2xl font-bold text-white mb-6 pb-2 border-b border-gray-700">
+        Projects
+      </h2>
+      
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {projects.map((project, index) => (
+          <a
+            key={index}
+            href={project.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center p-4 bg-[#0F0F1F] rounded-md border border-secondary/40 shadow-sm hover:border-secondary/80 hover:bg-[#141428] transition-all duration-300"
+          >
+            <div className="w-10 h-10 flex items-center justify-center rounded-full bg-secondary/40 mr-3">
+              🔗
+            </div>
+            <div className="text-white font-medium">
+              {project.name}
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+const ContactsCard: React.FC<{profile: ProfileData}> = ({ profile }) => {
+  const contacts = [
+    { icon: "📧", label: "Email", link: `mailto:${profile.email}`, value: profile.email },
+    { icon: "🔗", label: "LinkedIn", link: profile.linkedin, value: "LinkedIn Profile" },
+    { icon: "🐙", label: "GitHub", link: profile.github, value: "GitHub Profile" },
+    { icon: "📗", label: "GeeksforGeeks", link: profile.gfg, value: "GFG Profile" },
+    { icon: "💡", label: "Codeforces", link: profile.codeforces, value: "Codeforces Profile" },
+    { icon: "🏆", label: "CodeChef", link: profile.codechef, value: "CodeChef Profile" }
+  ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white">
-      <div className="max-w-4xl mx-auto p-6 space-y-6">
-        <div className="bg-gradient-to-br from-white to-gray-50 p-8 rounded-xl shadow-lg border border-gray-100">
-          <div className="flex items-center justify-between mb-6">
-            <div>
-              <h1 className="text-4xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
-                {profile.name}
-              </h1>
-              <p className="text-gray-600 mt-2 text-lg">{profile.bio}</p>
-              <p className="text-gray-500 mt-1 flex items-center">
-                <span className="mr-1">📍</span> {profile.location}
-              </p>
+    <div className="space-y-4">
+      {contacts.map((item, index) => (
+        <a
+          key={index}
+          href={item.link}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center p-3 bg-[#0F0F1F] rounded-md border border-gray-700 shadow-sm"
+        >
+          <div className="w-9 h-9 flex items-center justify-center rounded-full bg-secondary/30 mr-3">
+            {item.icon}
+          </div>
+          <div>
+            <div className="text-gray-300 text-xs">{item.label}</div>
+            <div className="text-white text-sm font-medium">
+              {item.value}
             </div>
           </div>
+        </a>
+      ))}
+    </div>
+  );
+};
 
-          {profile.website && (
-            <a
-              href={profile.website}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center px-4 py-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors duration-200"
-            >
-              🌐 {profile.website}
-            </a>
-          )}
-
-          <div className="mt-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">
-              Contact & Profiles
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <a
-                href={`mailto:${profile.email}`}
-                className="flex items-center p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors duration-200"
-              >
-                <span className="text-xl mr-3">📧</span>
-                <span className="text-gray-700">{profile.email}</span>
-              </a>
-              <a
-                href={profile.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors duration-200"
-              >
-                <span className="text-xl mr-3">🔗</span>
-                <span className="text-gray-700">LinkedIn</span>
-              </a>
-              <a
-                href={profile.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors duration-200"
-              >
-                <span className="text-xl mr-3">🐙</span>
-                <span className="text-gray-700">GitHub</span>
-              </a>
-              <a
-                href={profile.gfg}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors duration-200"
-              >
-                <span className="text-xl mr-3">📗</span>
-                <span className="text-gray-700">GeeksforGeeks</span>
-              </a>
-              <a
-                href={profile.codeforces}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors duration-200"
-              >
-                <span className="text-xl mr-3">💡</span>
-                <span className="text-gray-700">Codeforces</span>
-              </a>
-              <a
-                href={profile.codechef}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors duration-200"
-              >
-                <span className="text-xl mr-3">🏆</span>
-                <span className="text-gray-700">CodeChef</span>
-              </a>
+const Profile: React.FC = () => {
+  const profile = profileData as ProfileData;
+  
+  return (
+    <div className="min-h-screen bg-[#0a0d1d]">
+      <Navbar />
+      
+      {/* Main content */}
+      <div className="max-w-7xl mx-auto pt-16 pb-16 px-4 sm:px-6 lg:px-8">
+        {/* Profile Header */}
+        <ProfileCard profile={profile} />
+        
+        {/* Main Grid Layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+          {/* Left Column - Skills and Contact */}
+          <div className="lg:col-span-4 space-y-8">
+            {/* Skills Section */}
+            <SkillsCard skills={profile.skills} />
+            
+            {/* Contact Section */}
+            <div className="bg-[#161830] rounded-lg p-6 border border-secondary/50 shadow-md">
+              <h2 className="text-2xl font-bold text-white mb-6 pb-2 border-b border-gray-700">
+                Contact & Profiles
+              </h2>
+              <ContactsCard profile={profile} />
             </div>
           </div>
-
-          <div className="mt-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Skills</h2>
-            <div className="flex flex-wrap gap-2">
-              {profile.skills.map((skill, index) => (
-                <span
-                  key={index}
-                  className="px-4 py-2 bg-gradient-to-r from-gray-100 to-gray-50 text-gray-700 rounded-full text-sm font-medium shadow-sm border border-gray-100 hover:shadow-md transition-all duration-200"
-                >
-                  {skill}
-                </span>
-              ))}
-            </div>
+          
+          {/* Right Column - Projects and Stats */}
+          <div className="lg:col-span-8 space-y-8">
+            {/* Projects Section */}
+            <ProjectsCard projects={profile.projects} />
+            
+            {/* Stats Sections */}
+            <GitHubStatsBox />
+            <LeetCodeStatsBox />
           </div>
-
-          <div className="mt-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Projects</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {profile.projects.map((project, index) => (
-                <a
-                  key={index}
-                  href={project.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors duration-200"
-                >
-                  <span className="text-xl mr-3">🔗</span>
-                  <span className="text-gray-700">{project.name}</span>
-                </a>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <GitHubStatsBox />
-          <LeetCodeStatsBox />
         </div>
       </div>
     </div>
