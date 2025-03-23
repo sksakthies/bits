@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import ProjectCard from "../components/ProjectCard";
+import { dummyProjects } from "../data/dummyData";
 
 export default function MyProjects() {
   const [projects, setProjects] = useState([]);
@@ -16,10 +17,23 @@ export default function MyProjects() {
           fetch("/documents.json"),
         ]);
 
-        const projectsData = projectsRes.status === "fulfilled" ? await projectsRes.value.json() : [];
-        const documentsData = docsRes.status === "fulfilled" ? await docsRes.value.json() : { documents: [] };
+        if (
+          projectsRes.status === "rejected" ||
+          docsRes.status === "rejected"
+        ) {
+          // If API calls fail, use dummy data
+          setProjects(dummyProjects);
+          setPublicDocuments(dummyProjects.filter((p) => p.isPublic));
+          setLoading(false);
+          return;
+        }
 
-        const publicTitles = new Set(documentsData.documents.map((doc) => doc.title));
+        const projectsData = await projectsRes.value.json();
+        const documentsData = await docsRes.value.json();
+
+        const publicTitles = new Set(
+          documentsData.documents.map((doc) => doc.title)
+        );
         const projectsWithVisibility = projectsData.map((project) => ({
           ...project,
           isPublic: publicTitles.has(project.title),
@@ -28,7 +42,10 @@ export default function MyProjects() {
         setProjects(projectsWithVisibility);
         setPublicDocuments(documentsData.documents);
       } catch (err) {
-        setError(err.message);
+        // If any error occurs, use dummy data
+        setProjects(dummyProjects);
+        setPublicDocuments(dummyProjects.filter((p) => p.isPublic));
+        setError("Using dummy data due to API failure");
       } finally {
         setLoading(false);
       }
@@ -49,10 +66,18 @@ export default function MyProjects() {
       await fetch(`http://localhost:5000/api/projects/${title}/visibility`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ isPublic: !projects.find((p) => p.title === title)?.isPublic }),
+        body: JSON.stringify({
+          isPublic: !projects.find((p) => p.title === title)?.isPublic,
+        }),
       });
     } catch (err) {
       console.error("Failed to update visibility:", err);
+      // Revert the change if API call fails
+      setProjects((prev) =>
+        prev.map((p) =>
+          p.title === title ? { ...p, isPublic: !p.isPublic } : p
+        )
+      );
     }
   };
 
@@ -61,7 +86,7 @@ export default function MyProjects() {
       {loading ? (
         <p className="text-white text-xl">Loading saved projects...</p>
       ) : error ? (
-        <p className="text-red-400 text-xl">{error}</p>
+        <p className="text-yellow-400 text-xl">{error}</p>
       ) : projects.length > 0 ? (
         projects.map((project, index) => (
           <ProjectCard

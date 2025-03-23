@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import profileData from "./prog.json";
-import Navbar from '../components/Navbar';
+import { dummyProfile } from "../data/dummyData";
+import Navbar from "../components/Navbar";
 
 interface ProfileData {
   name: string;
@@ -41,16 +42,35 @@ interface GitHubStats {
 const LeetCodeStatsBox: React.FC = () => {
   const [stats, setStats] = useState<LeetCodeStats | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     fetch("https://leetcode-stats-api.herokuapp.com/Venkat")
-      .then((response) => response.json())
+      .then((response) => {
+        if (!response.ok) throw new Error("Failed to fetch LeetCode stats");
+        return response.json();
+      })
       .then((data) => {
         setStats(data);
         setLoading(false);
       })
       .catch((error) => {
         console.error("Error fetching LeetCode stats:", error);
+        setError("Using dummy LeetCode stats");
+        setStats({
+          totalSolved: 150,
+          totalQuestions: 2000,
+          easySolved: 80,
+          totalEasy: 500,
+          mediumSolved: 60,
+          totalMedium: 1000,
+          hardSolved: 10,
+          totalHard: 500,
+          acceptanceRate: 75,
+          ranking: 5000,
+          contributionPoints: 100,
+          reputation: 500,
+        });
         setLoading(false);
       });
   }, []);
@@ -66,7 +86,7 @@ const LeetCodeStatsBox: React.FC = () => {
         </div>
       </div>
     );
-    
+
   if (!stats)
     return (
       <div className="w-full bg-[#161830] rounded-lg p-6 border border-red-500/60">
@@ -79,18 +99,18 @@ const LeetCodeStatsBox: React.FC = () => {
   return (
     <div className="w-full bg-[#161830] rounded-lg p-6 border border-primary/50">
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold text-white">
-          LeetCode Statistics
-        </h2>
+        <h2 className="text-2xl font-bold text-white">LeetCode Statistics</h2>
         <div className="px-4 py-1.5 bg-primary text-white rounded-md text-sm font-bold">
           Rank #{stats.ranking}
         </div>
       </div>
-      
+
       <div className="grid grid-cols-2 gap-6">
         <div className="space-y-4">
           <div className="bg-[#0F0F1F] p-4 rounded-lg border border-primary/30">
-            <div className="text-sm text-primary-light font-medium mb-1">Total Solved</div>
+            <div className="text-sm text-primary-light font-medium mb-1">
+              Total Solved
+            </div>
             <div className="text-2xl font-bold text-white">
               {stats.totalSolved}
               <span className="text-sm text-white ml-1">
@@ -101,14 +121,18 @@ const LeetCodeStatsBox: React.FC = () => {
 
           <div className="grid grid-cols-3 gap-3">
             <div className="bg-[#0F0F1F] p-3 rounded-lg border border-green-500/50">
-              <div className="text-sm text-green-400 mb-1 font-semibold">Easy</div>
+              <div className="text-sm text-green-400 mb-1 font-semibold">
+                Easy
+              </div>
               <div className="text-lg font-bold text-white">
                 {stats.easySolved}
               </div>
               <div className="text-xs text-green-400">/ {stats.totalEasy}</div>
             </div>
             <div className="bg-[#0F0F1F] p-3 rounded-lg border border-yellow-500/50">
-              <div className="text-sm text-yellow-400 mb-1 font-semibold">Medium</div>
+              <div className="text-sm text-yellow-400 mb-1 font-semibold">
+                Medium
+              </div>
               <div className="text-lg font-bold text-white">
                 {stats.mediumSolved}
               </div>
@@ -117,7 +141,9 @@ const LeetCodeStatsBox: React.FC = () => {
               </div>
             </div>
             <div className="bg-[#0F0F1F] p-3 rounded-lg border border-red-500/50">
-              <div className="text-sm text-red-400 mb-1 font-semibold">Hard</div>
+              <div className="text-sm text-red-400 mb-1 font-semibold">
+                Hard
+              </div>
               <div className="text-lg font-bold text-white">
                 {stats.hardSolved}
               </div>
@@ -128,7 +154,9 @@ const LeetCodeStatsBox: React.FC = () => {
 
         <div className="space-y-4">
           <div className="bg-[#0F0F1F] p-4 rounded-lg border border-blue-500/50">
-            <div className="text-sm text-blue-400 mb-1 font-semibold">Acceptance Rate</div>
+            <div className="text-sm text-blue-400 mb-1 font-semibold">
+              Acceptance Rate
+            </div>
             <div className="text-2xl font-bold text-white">
               {stats.acceptanceRate}%
             </div>
@@ -150,24 +178,24 @@ const LeetCodeStatsBox: React.FC = () => {
 const GitHubStatsBox: React.FC = () => {
   const [stats, setStats] = useState<GitHubStats | null>(null);
   const [loading, setLoading] = useState(true);
-  const username = "VenkataramanaKB"; // Replace with your GitHub username
+  const [error, setError] = useState<string | null>(null);
+  const username = "VenkataramanaKB";
 
   useEffect(() => {
     const fetchGitHubData = async () => {
       try {
-        // Fetch user data
         const userResponse = await fetch(
           `https://api.github.com/users/${username}`
         );
-        const userData = await userResponse.json();
+        if (!userResponse.ok) throw new Error("Failed to fetch GitHub data");
 
-        // Fetch repositories to get languages
+        const userData = await userResponse.json();
         const reposResponse = await fetch(
           `https://api.github.com/users/${username}/repos`
         );
-        const reposData = await reposResponse.json();
+        if (!reposResponse.ok) throw new Error("Failed to fetch GitHub repos");
 
-        // Get unique languages from repositories
+        const reposData = await reposResponse.json();
         const languages = Array.from(
           new Set(
             reposData
@@ -184,6 +212,12 @@ const GitHubStatsBox: React.FC = () => {
         setLoading(false);
       } catch (error) {
         console.error("Error fetching GitHub stats:", error);
+        setError("Using dummy GitHub stats");
+        setStats({
+          public_repos: 25,
+          languages: ["JavaScript", "TypeScript", "Python", "Java"],
+          username: "johndoe",
+        });
         setLoading(false);
       }
     };
@@ -202,7 +236,7 @@ const GitHubStatsBox: React.FC = () => {
         </div>
       </div>
     );
-    
+
   if (!stats)
     return (
       <div className="w-full bg-[#161830] rounded-lg p-6 border border-red-500/60">
@@ -215,9 +249,7 @@ const GitHubStatsBox: React.FC = () => {
   return (
     <div className="w-full bg-[#161830] rounded-lg p-6 border border-secondary/50">
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold text-white">
-          GitHub Statistics
-        </h2>
+        <h2 className="text-2xl font-bold text-white">GitHub Statistics</h2>
         <a
           href={`https://github.com/${stats.username}`}
           target="_blank"
@@ -230,14 +262,18 @@ const GitHubStatsBox: React.FC = () => {
 
       <div className="grid grid-cols-2 gap-6">
         <div className="bg-[#0F0F1F] p-4 rounded-lg border border-secondary/30">
-          <div className="text-sm text-secondary-light font-medium mb-1">Total Repositories</div>
+          <div className="text-sm text-secondary-light font-medium mb-1">
+            Total Repositories
+          </div>
           <div className="text-2xl font-bold text-white">
             {stats.public_repos}
           </div>
         </div>
 
         <div className="bg-[#0F0F1F] p-4 rounded-lg border border-secondary/30">
-          <div className="text-sm text-secondary-light font-medium mb-1">Languages Used</div>
+          <div className="text-sm text-secondary-light font-medium mb-1">
+            Languages Used
+          </div>
           <div className="flex flex-wrap gap-2 mt-2">
             {stats.languages.map((lang, index) => (
               <span
@@ -254,20 +290,18 @@ const GitHubStatsBox: React.FC = () => {
   );
 };
 
-const ProfileCard: React.FC<{profile: ProfileData}> = ({ profile }) => {
+const ProfileCard: React.FC<{ profile: ProfileData }> = ({ profile }) => {
   return (
     <div className="w-full bg-[#161830] rounded-lg p-8 mb-8 border border-primary/50 shadow-md">
       <div className="flex flex-col md:flex-row gap-6 items-start md:items-center justify-between">
         <div>
-          <h1 className="text-4xl font-bold text-white mb-3">
-            {profile.name}
-          </h1>
+          <h1 className="text-4xl font-bold text-white mb-3">{profile.name}</h1>
           <p className="text-white text-lg mb-3">{profile.bio}</p>
           <p className="text-white flex items-center">
             <span className="mr-2">📍</span> {profile.location}
           </p>
         </div>
-        
+
         {profile.website && (
           <a
             href={profile.website}
@@ -283,13 +317,13 @@ const ProfileCard: React.FC<{profile: ProfileData}> = ({ profile }) => {
   );
 };
 
-const SkillsCard: React.FC<{skills: string[]}> = ({ skills }) => {
+const SkillsCard: React.FC<{ skills: string[] }> = ({ skills }) => {
   return (
     <div className="w-full bg-[#161830] rounded-lg p-6 border border-primary/50 shadow-md">
       <h2 className="text-2xl font-bold text-white mb-6 pb-2 border-b border-gray-700">
         Skills
       </h2>
-      
+
       <div className="flex flex-wrap gap-3">
         {skills.map((skill, index) => (
           <span
@@ -304,13 +338,15 @@ const SkillsCard: React.FC<{skills: string[]}> = ({ skills }) => {
   );
 };
 
-const ProjectsCard: React.FC<{projects: {name: string; link: string}[]}> = ({ projects }) => {
+const ProjectsCard: React.FC<{
+  projects: { name: string; link: string }[];
+}> = ({ projects }) => {
   return (
     <div className="w-full bg-[#161830] rounded-lg p-6 border border-primary/50 shadow-md">
       <h2 className="text-2xl font-bold text-white mb-6 pb-2 border-b border-gray-700">
         Projects
       </h2>
-      
+
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {projects.map((project, index) => (
           <a
@@ -323,9 +359,7 @@ const ProjectsCard: React.FC<{projects: {name: string; link: string}[]}> = ({ pr
             <div className="w-10 h-10 flex items-center justify-center rounded-full bg-secondary/40 mr-3">
               🔗
             </div>
-            <div className="text-white font-medium">
-              {project.name}
-            </div>
+            <div className="text-white font-medium">{project.name}</div>
           </a>
         ))}
       </div>
@@ -333,14 +367,44 @@ const ProjectsCard: React.FC<{projects: {name: string; link: string}[]}> = ({ pr
   );
 };
 
-const ContactsCard: React.FC<{profile: ProfileData}> = ({ profile }) => {
+const ContactsCard: React.FC<{ profile: ProfileData }> = ({ profile }) => {
   const contacts = [
-    { icon: "📧", label: "Email", link: `mailto:${profile.email}`, value: profile.email },
-    { icon: "🔗", label: "LinkedIn", link: profile.linkedin, value: "LinkedIn Profile" },
-    { icon: "🐙", label: "GitHub", link: profile.github, value: "GitHub Profile" },
-    { icon: "📗", label: "GeeksforGeeks", link: profile.gfg, value: "GFG Profile" },
-    { icon: "💡", label: "Codeforces", link: profile.codeforces, value: "Codeforces Profile" },
-    { icon: "🏆", label: "CodeChef", link: profile.codechef, value: "CodeChef Profile" }
+    {
+      icon: "📧",
+      label: "Email",
+      link: `mailto:${profile.email}`,
+      value: profile.email,
+    },
+    {
+      icon: "🔗",
+      label: "LinkedIn",
+      link: profile.linkedin,
+      value: "LinkedIn Profile",
+    },
+    {
+      icon: "🐙",
+      label: "GitHub",
+      link: profile.github,
+      value: "GitHub Profile",
+    },
+    {
+      icon: "📗",
+      label: "GeeksforGeeks",
+      link: profile.gfg,
+      value: "GFG Profile",
+    },
+    {
+      icon: "💡",
+      label: "Codeforces",
+      link: profile.codeforces,
+      value: "Codeforces Profile",
+    },
+    {
+      icon: "🏆",
+      label: "CodeChef",
+      link: profile.codechef,
+      value: "CodeChef Profile",
+    },
   ];
 
   return (
@@ -358,9 +422,7 @@ const ContactsCard: React.FC<{profile: ProfileData}> = ({ profile }) => {
           </div>
           <div>
             <div className="text-gray-300 text-xs">{item.label}</div>
-            <div className="text-white text-sm font-medium">
-              {item.value}
-            </div>
+            <div className="text-white text-sm font-medium">{item.value}</div>
           </div>
         </a>
       ))}
@@ -369,24 +431,61 @@ const ContactsCard: React.FC<{profile: ProfileData}> = ({ profile }) => {
 };
 
 const Profile: React.FC = () => {
-  const profile = profileData as ProfileData;
-  
+  const [profile, setProfile] = useState<ProfileData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    try {
+      // Try to use the imported profile data
+      setProfile(profileData as ProfileData);
+    } catch (err) {
+      // If there's an error, use dummy data
+      setProfile(dummyProfile);
+      setError("Using dummy profile data");
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-[#0a0d1d] flex items-center justify-center">
+        <p className="text-white text-xl">Loading profile...</p>
+      </div>
+    );
+  }
+
+  if (!profile) {
+    return (
+      <div className="min-h-screen bg-[#0a0d1d] flex items-center justify-center">
+        <p className="text-red-400 text-xl">Failed to load profile data</p>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-[#0a0d1d]">
       <Navbar />
-      
+
       {/* Main content */}
       <div className="max-w-7xl mx-auto pt-16 pb-16 px-4 sm:px-6 lg:px-8">
+        {error && (
+          <div className="mb-4 p-4 bg-yellow-500/20 border border-yellow-500/50 rounded-lg">
+            <p className="text-yellow-400">{error}</p>
+          </div>
+        )}
+
         {/* Profile Header */}
         <ProfileCard profile={profile} />
-        
+
         {/* Main Grid Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           {/* Left Column - Skills and Contact */}
           <div className="lg:col-span-4 space-y-8">
             {/* Skills Section */}
             <SkillsCard skills={profile.skills} />
-            
+
             {/* Contact Section */}
             <div className="bg-[#161830] rounded-lg p-6 border border-secondary/50 shadow-md">
               <h2 className="text-2xl font-bold text-white mb-6 pb-2 border-b border-gray-700">
@@ -395,12 +494,12 @@ const Profile: React.FC = () => {
               <ContactsCard profile={profile} />
             </div>
           </div>
-          
+
           {/* Right Column - Projects and Stats */}
           <div className="lg:col-span-8 space-y-8">
             {/* Projects Section */}
             <ProjectsCard projects={profile.projects} />
-            
+
             {/* Stats Sections */}
             <GitHubStatsBox />
             <LeetCodeStatsBox />
