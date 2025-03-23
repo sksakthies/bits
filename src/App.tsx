@@ -3,6 +3,7 @@ import Home from './pages/Home';
 import Navbar from './components/Navbar';
 import Profile from './pages/Profile';
 import Settings from './pages/Settings';
+import Community from './pages/Community';
 
 const App = () => {
   return (
@@ -14,6 +15,7 @@ const App = () => {
             <Route path="/" element={<Home/>} />
             <Route path="/profile" element={<Profile/>} />
             <Route path="/profile/settings" element={<Settings/>} />
+            <Route path="/community" element={<Community/>} />
           </Routes>
         </main>
       </div>
