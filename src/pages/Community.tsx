@@ -158,16 +158,42 @@ export default function Community() {
   useEffect(() => {
     const fetchDocuments = async () => {
       try {
+        // First try to fetch from the client/public folder
         const response = await fetch("/community.json");
+        
         if (!response.ok) {
-          throw new Error("Failed to fetch documents");
+          console.error(`Failed fetch status: ${response.status} ${response.statusText}`);
+          throw new Error(`Failed to fetch documents: ${response.status} ${response.statusText}`);
         }
-        const data = await response.json();
+        
+        // Check if we got JSON or HTML (in case of server error pages)
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+          console.error("Non-JSON response received:", contentType);
+          const text = await response.text();
+          console.error("Response content:", text.substring(0, 200) + "..."); // Log first 200 chars
+          throw new Error("Invalid response format. Expected JSON but received HTML or other format.");
+        }
+        
+        // Parse the JSON response
+        let data;
+        try {
+          data = await response.json();
+        } catch (parseError) {
+          console.error("JSON parse error:", parseError);
+          throw new Error("Failed to parse response as JSON");
+        }
+        
+        // Ensure the expected data structure exists
+        if (!data || !data.documents || !Array.isArray(data.documents)) {
+          throw new Error("Invalid data format: missing documents array");
+        }
 
         const savedStates = JSON.parse(
           localStorage.getItem("documentStates") || "{}"
         );
 
+        // Create hardcoded data if fetch fails
         const documentsWithStates = data.documents.map((doc: Document) => ({
           ...doc,
           isStarred: savedStates[doc.id]?.isStarred || false,
@@ -184,7 +210,18 @@ export default function Community() {
           .slice(0, 3);
         setFeaturedProjects(featured);
       } catch (err: any) {
+        console.error("Error fetching community data:", err);
         setError(err.message);
+        
+        // Use hardcoded data as fallback
+        const fallbackData = getFallbackData();
+        setDocuments(fallbackData);
+        
+        // Set featured projects from fallback data
+        const featured = [...fallbackData]
+          .sort((a, b) => b.stars - a.stars)
+          .slice(0, 3);
+        setFeaturedProjects(featured);
       } finally {
         setLoading(false);
       }
@@ -192,6 +229,72 @@ export default function Community() {
 
     fetchDocuments();
   }, []);
+  
+  // Fallback data function in case JSON fetch fails
+  const getFallbackData = (): Document[] => {
+    return [
+      {
+        id: "comm1",
+        title: "Virtual Study Groups",
+        description: "Platform for forming and managing virtual study groups across different time zones",
+        author: "Lisa Taylor",
+        tags: ["Collaboration", "Remote Learning", "Study Groups"],
+        createdAt: "2023-04-12",
+        stars: 356,
+        forks: 84,
+        isStarred: false,
+        isForked: false
+      },
+      {
+        id: "comm2",
+        title: "Teacher Resource Exchange",
+        description: "Community-driven marketplace for teachers to share and trade educational resources",
+        author: "Michael Rivera",
+        tags: ["Teaching", "Resources", "Sharing Economy"],
+        createdAt: "2023-05-28",
+        stars: 412,
+        forks: 97,
+        isStarred: false,
+        isForked: false
+      },
+      {
+        id: "comm3",
+        title: "Student Mentorship Network",
+        description: "Connecting students with industry professionals for career guidance and mentorship",
+        author: "Hannah Wong",
+        tags: ["Mentorship", "Career Development", "Networking"],
+        createdAt: "2023-06-15",
+        stars: 289,
+        forks: 43,
+        isStarred: false,
+        isForked: false
+      },
+      {
+        id: "comm4",
+        title: "Global Classroom Connect",
+        description: "Platform for connecting classrooms globally for cultural exchange and collaborative projects",
+        author: "Robert Johnson",
+        tags: ["Cultural Exchange", "Global Education", "Collaboration"],
+        createdAt: "2023-07-21",
+        stars: 378,
+        forks: 102,
+        isStarred: false,
+        isForked: false
+      },
+      {
+        id: "comm5",
+        title: "Academic Conference Hub",
+        description: "Virtual conference platform specialized for academic gatherings and presentations",
+        author: "Priya Sharma",
+        tags: ["Conferences", "Academic", "Virtual Events"],
+        createdAt: "2023-08-08",
+        stars: 203,
+        forks: 35,
+        isStarred: false,
+        isForked: false
+      }
+    ];
+  };
 
   useEffect(() => {
     const states = documents.reduce(
